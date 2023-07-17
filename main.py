@@ -9,9 +9,11 @@ class MyServer(BaseHTTPRequestHandler):
         Специальный класс, который отвечает за
         обработку входящих запросов от клиентов
     """
-    def get_html_content(self):
-        return """
-        <!doctype html>
+
+    def do_GET(self):
+        """ Метод для обработки входящих GET-запросов """
+        page_content = """
+            <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -79,13 +81,11 @@ class MyServer(BaseHTTPRequestHandler):
 </html>
         """
 
-    def do_GET(self):
-        """ Метод для обработки входящих GET-запросов """
-        page_content = self.get_html_content()
-        self.send_response(200) # Отправка кода ответа
-        self.send_header("Content-type", "application/json") # Отправка типа данных, который будет передаваться
-        self.end_headers() # Завершение формирования заголовков ответа
-        self.wfile.write(bytes(page_content, "utf-8")) # Тело ответа
+        self.send_response(200)  # Отправка кода ответа
+        self.send_header("Content-type", "text/html")  # Отправка типа данных, который будет передаваться
+        self.end_headers()  # Завершение формирования заголовков ответа
+        self.wfile.write(bytes(page_content, "utf-8"))  # Тело ответа
+
 
 if __name__ == "__main__":
     # Инициализация веб-сервера, который будет по заданным параметрам в сети
